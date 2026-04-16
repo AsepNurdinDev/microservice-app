@@ -1,40 +1,24 @@
 services:
-  auth-service:
-    build: ./services/auth-service
-    container_name: auth-service
-    ports:
-      - "8005:8001"
-    depends_on:
-      postgres:
-        condition: service_healthy 
-    env_file:
-      - ./services/auth-service/.env
-
+  # --- DATABASE SECTION ---
   postgres:
-    image: postgres:15
+    image: postgres:15-alpine
     container_name: postgres
     restart: always
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: 281205
-      POSTGRES_DB: auth_db
+      POSTGRES_USER: ${DB_USER:-user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-281205}
+      POSTGRES_DB: ${DB_NAME:-auth_db}
     ports:
       - "5432:5432"
-    healthcheck: 
-      test: ["CMD-SHELL", "pg_isready -U user -d auth_db"]
-      interval: 5s
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-user} -d ${DB_NAME:-auth_db}"]
+      interval: 10s
       timeout: 5s
       retries: 5
-
-  article-service:
-    build: ./services/article-service
-    container_name: article-service
-    ports:
-      - "8006:8002"
-    depends_on:
-      - mongodb
-    env_file:
-      - ./services/article-service/.env
+    networks:
+      - backend_net
 
   mongodb:
     image: mongo:6
@@ -42,16 +26,60 @@ services:
     restart: always
     ports:
       - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - backend_net
+
+  # --- SERVICES SECTION ---
+  auth-service:
+    build: ./services/auth-service
+    container_name: auth-service
+    restart: always
+    ports:
+      - "8005:8001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file:
+      - .env
+    networks:
+      - backend_net
+
+  article-service:
+    build: ./services/article-service
+    container_name: article-service
+    restart: always
+    ports:
+      - "8006:8002"
+    depends_on:
+      - mongodb
+    env_file:
+      - .env
+    networks:
+      - backend_net
 
   gateway-service:
     build: ./services/gateway-service
     container_name: gateway-service
+    restart: always
     ports:
       - "8080:8080"
     environment:
-    - AUTH_SERVICE_URL=http://auth-service:8001
-    - ARTICLE_SERVICE_URL=http://article-service:8002
-    - JWT_SECRET=supersecret
+      - AUTH_SERVICE_URL=http://auth-service:8001
+      - ARTICLE_SERVICE_URL=http://article-service:8002
+      - JWT_SECRET=${JWT_SECRET}
     depends_on:
-    - auth-service
-    - article-service
+      - auth-service
+      - article-service
+    networks:
+      - backend_net
+
+# --- NETWORKS & VOLUMES ---
+networks:
+  backend_net:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  mongodb_data:
