@@ -3,12 +3,14 @@ package jwt
 import (
 	"fmt"
 	"time"
+	"os"
 
 	"github.com/golang-jwt/jwt/v5"
 )
 
 // GenerateToken membuat access token JWT dengan expiry 15 menit
-func GenerateToken(userID int64, secret string) (string, error) {
+func GenerateToken(userID int64) (string, error) {
+	secret := os.Getenv("JWT_SECRET")
 	if secret == "" {
 		return "", fmt.Errorf("jwt secret cannot be empty")
 	}

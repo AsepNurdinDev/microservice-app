@@ -2,8 +2,8 @@ package usecase
 
 import (
 	"auth-service/internal/domain"
-	"auth-service/internal/repository"
 	jwtpkg "auth-service/internal/infrastructure/jwt"
+	"auth-service/internal/repository"
 	"errors"
 	"fmt"
 
@@ -66,7 +66,7 @@ func (u *AuthUsecase) Login(email, password string) (string, error) {
 		return "", ErrInvalidCredentials
 	}
 
-	token, err := jwtpkg.GenerateToken(user.ID, u.jwtSecret)
+	token, err := jwtpkg.GenerateToken(user.ID)
 	if err != nil {
 		return "", fmt.Errorf("failed to generate token: %w", err)
 	}

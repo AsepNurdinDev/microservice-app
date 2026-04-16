@@ -18,11 +18,11 @@ type Config struct {
 func Load() *Config {
 	cfg := &Config{
 		Port:      getEnv("AUTH_PORT", "8001"),
-		DBHost:    getEnv("DB_HOST", "localhost"),
-		DBPort:    getEnv("DB_PORT", "5432"),
-		DBUser:    getEnv("DB_USER", "user"),
-		DBPass:    getEnv("DB_PASSWORD", "password"),
-		DBName:    getEnv("DB_NAME", "auth_db"),
+		DBHost:    getEnv("AUTH_DB_HOST", "localhost"),
+		DBPort:    getEnv("AUTH_DB_PORT", "5432"),
+		DBUser:    getEnv("AUTH_DB_USER", "user"),
+		DBPass:    getEnv("AUTH_DB_PASSWORD", "password"),
+		DBName:    getEnv("AUTH_DB_NAME", "auth_db"),
 		JWTSecret: os.Getenv("JWT_SECRET"),
 	}
 
