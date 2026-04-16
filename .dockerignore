@@ -1,0 +1,26 @@
+# Git
+.git
+.gitignore
+
+# Docker configuration
+docker-compose.yml
+Dockerfile
+.dockerignore
+
+# Documentation
+README.md
+LICENSE
+
+# Local environment and logs
+.env
+*.log
+
+# Dependency and binary (Docker akan download sendiri di dalam container)
+vendor/
+node_modules/
+bin/
+main
+
+# IDE
+.vscode/
+.idea/

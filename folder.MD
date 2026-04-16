@@ -1,0 +1,71 @@
+microservices-app/
+│
+├── docker-compose.yml
+├── .env
+│
+├── services/
+│   ├── auth-service/
+│   │   ├── cmd/
+│   │   │   └── main.go
+│   │   │
+│   │   ├── internal/
+│   │   │   ├── domain/
+│   │   │   │   └── user.go
+│   │   │   │
+│   │   │   ├── repository/
+│   │   │   │   └── user_repository.go
+│   │   │   │
+│   │   │   ├── usecase/
+│   │   │   │   └── auth_usecase.go
+│   │   │   │
+│   │   │   ├── delivery/
+│   │   │   │   └── http/
+│   │   │   │       └── handler.go
+│   │   │   │
+│   │   │   └── infrastructure/
+│   │   │       ├── database/
+│   │   │       │   └── postgres.go
+│   │   │       └── jwt/
+│   │   │           └── jwt.go
+│   │   │
+│   │   ├── pkg/
+│   │   │   └── utils/
+│   │   │       └── response.go
+│   │   │
+│   │   ├── Dockerfile
+│   │   └── go.mod
+│   │
+│   ├── article-service/
+│   │   ├── cmd/
+│   │   │   └── main.go
+│   │   │
+│   │   ├── internal/
+│   │   │   ├── domain/
+│   │   │   │   └── article.go
+│   │   │   │
+│   │   │   ├── repository/
+│   │   │   │   └── article_repository.go
+│   │   │   │
+│   │   │   ├── usecase/
+│   │   │   │   └── article_usecase.go
+│   │   │   │
+│   │   │   ├── delivery/
+│   │   │   │   └── http/
+│   │   │   │       └── handler.go
+│   │   │   │
+│   │   │   └── infrastructure/
+│   │   │       ├── database/
+│   │   │       │   └── mongodb.go
+│   │   │       └── middleware/
+│   │   │           └── auth_middleware.go
+│   │   │
+│   │   ├── pkg/
+│   │   │   └── utils/
+│   │   │       └── response.go
+│   │   │
+│   │   ├── Dockerfile
+│   │   └── go.mod
+│
+└── gateway/
+    ├── nginx.conf
+    └── Dockerfile
