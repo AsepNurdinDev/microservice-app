@@ -2,12 +2,6 @@ pipeline {
     agent any
 
     stages {
-        stage('Pull Code') {
-            steps {
-                git 'https://github.com/AsepNurdinDev/microservice-app.git'
-            }
-        }
-
         stage('Build Docker') {
             steps {
                 sh 'docker compose build'
