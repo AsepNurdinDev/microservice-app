@@ -37,7 +37,7 @@ Buat file `.env` di direktori root proyek (`microservice-app/.env`) dan isi deng
 ```env
 # Database Auth (PostgreSQL)
 AUTH_DB_USER=user
-AUTH_DB_PASSWORD=281205
+AUTH_DB_PASSWORD=
 AUTH_DB_NAME=auth_db
 AUTH_DB_HOST=postgres
 AUTH_DB_PORT=5432
