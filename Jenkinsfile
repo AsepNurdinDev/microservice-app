@@ -21,10 +21,21 @@ pipeline {
             }
         }
 
+        stage('Force Clean Old Containers') {
+            steps {
+                sh '''
+                docker rm -f auth-service || true
+                docker rm -f article-service || true
+                docker rm -f gateway-service || true
+                docker rm -f mongodb || true
+                docker rm -f postgres || true
+                '''
+            }
+        }
+
         stage('Deploy') {
             steps {
                 sh '''
-                docker-compose down
                 docker-compose up -d
                 '''
             }
